@@ -2,7 +2,7 @@
   description = "The config of Emmanuel Federbusch's macOS computers (nix-darwin + home-manager)";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
     darwin.url  = "github:LnL7/nix-darwin";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
