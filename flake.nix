@@ -50,7 +50,12 @@
             sqlite postgresql supabase-cli
           ];
 
-          programs.zsh.enable = true;
+          programs.zsh = { 
+            enable = true;
+            # Ensure Nix-managed programs take priority
+            export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
+            export EDITOR=nvim
+          }
           security.pam.services.sudo_local.touchIdAuth = true;
 
           # macOS defaults
