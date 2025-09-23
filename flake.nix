@@ -62,7 +62,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${username} = { pkgs, ... }: {
-            home.stateVersion = "1";
+            home.stateVersion = "25.05";
             programs.starship.enable = true;
             programs.git = {
               enable = true;
