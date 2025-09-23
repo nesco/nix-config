@@ -50,14 +50,7 @@
             sqlite postgresql supabase-cli
           ];
 
-          programs.zsh = { 
-            enable = true;
-            initExtra = ''
-              # Ensure Nix-managed programs take priority
-              export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
-              export EDITOR=nvim
-            '';
-          };
+          programs.zsh.enable = true;
           security.pam.services.sudo_local.touchIdAuth = true;
 
           # macOS defaults
@@ -74,6 +67,14 @@
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
             programs.starship.enable = true;
+            programs.zsh = { 
+              enable = true;
+              initExtra = ''
+                # Ensure Nix-managed programs take priority
+                export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
+                export EDITOR=nvim
+              '';
+            };
             programs.git = {
               enable = true;
               userName = "Emmanuel Federbusch";
