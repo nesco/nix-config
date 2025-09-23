@@ -1,0 +1,96 @@
+{
+  description = "The config of Emmanuel Federbusch's macOS computers (nix-darwin + home-manager)";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05";
+    darwin.url  = "github:LnL7/nix-darwin";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+  };
+
+  outputs = { self, nixpkgs, darwin, home-manager, nix-homebrew, ... }:
+  let 
+    username = "emmanuel";
+    hostname = "emmanuel-mbp";
+    system = "aarch64-darwin"; # M-Series
+  in {
+    darwinConfigurations.${hostname} = darwin.lib.darwinSystem {
+      inherit system;
+      specialArgs = { inherit username hostname; };
+      modules = [
+        # Core nix-darwin settings
+        ({ pkgs, ... }: {
+          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          users.users.${username}.home = "/Users/${username}";
+
+          environment.systemPackages = with pkgs; [
+            # shell & workflow
+            git gh lazygit ripgrep fd jq eza bat fzf tree tmux watchman glow jujutsu docker
+
+            # languages / runtimes
+            nodejs_22 bun deno go gopls python313 rustup uv ocaml opam php
+
+            # formatters / linters / TS
+            ruff nodePackages.prettier nodePackages.typescript
+
+            # editors & build
+            neovim vscode zed-editor cmake pkg-config gnumake vim
+
+            # media & misc
+            ffmpeg yt-dlp ast-grep
+
+            # db & cloud CLIs
+            sqlite postgresql supabase-cli
+          ];
+
+          services.nix-daemon.enable = true;
+          programs.zsh.enable = true;
+          security.pam.enableSudoTouchIdAuth = true;
+
+          # macOS defaults
+          system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
+          system.defaults.dock.autohide = true;
+          system.defaults.finder.FXPreferredViewStyle = "Nlsv"; # list view
+        })
+
+        # Home Manager as a nix-darwin module
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPkgs = true;
+          home-manager.users.${username} = { pkgs, ... }: {
+            home.stateVersion = "24.05";
+            programs.starship.enable = true;
+            programs.git = {
+              enable = true;
+              userName = "Emmanuel Federbusch";
+              userEmail = "emmanuel@federbusch.fr";
+              extraConfig = {
+                init.defaultBranch = "main";
+                pull.rebase = true;
+              };
+            };
+            programs.neovim.enable = true;
+
+            home.file.".gitignore_global".text = ''
+              .DS_Store
+              node_modules/
+            '';
+          };
+        }
+
+        # Optional nix-homebrew (disabled by default)
+        nix-homebrew.darwinModules.nix-homebrew {
+          nix-homebrew = {
+            enable = false;
+            user = username;
+            taps = [ "homebrew/homebrew-core" "homebrew/homebrew-cask" ];
+            brews = [ ];
+            casks = [ ];
+          };
+        }
+      ];
+    };
+  };
+}
