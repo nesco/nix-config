@@ -24,6 +24,9 @@
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
           users.users.${username}.home = "/Users/${username}";
 
+          system.stateVersion = 6;
+          system.primaryUser = username;
+
           environment.systemPackages = with pkgs; [
             # shell & workflow
             git gh lazygit ripgrep fd jq eza bat fzf tree tmux watchman glow jujutsu docker
@@ -44,9 +47,8 @@
             sqlite postgresql supabase-cli
           ];
 
-          services.nix-daemon.enable = true;
           programs.zsh.enable = true;
-          security.pam.enableSudoTouchIdAuth = true;
+          security.pam.services.sudo_local.touchIdAuth = true;
 
           # macOS defaults
           system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
@@ -60,7 +62,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${username} = { pkgs, ... }: {
-            home.stateVersion = "24.05";
+            home.stateVersion = "1";
             programs.starship.enable = true;
             programs.git = {
               enable = true;
