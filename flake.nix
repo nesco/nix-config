@@ -68,6 +68,10 @@
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
             programs.starship.enable = true;
+            programs.zoxide.enable = true;
+            programs.fzf.enable = true;
+            programs.direnv.enable = true;
+            programs.direnv.nix-direnv.enable = true;
             programs.zsh = { 
               enable = true;
               initContent = ''
