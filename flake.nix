@@ -81,15 +81,17 @@
         }
 
         # Optional nix-homebrew (disabled by default)
-        nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = false;
-            user = username;
-            taps = [ "homebrew/homebrew-core" "homebrew/homebrew-cask" ];
-            brews = [ ];
-            casks = [ ];
-          };
-        }
+        # nix-homebrew.darwinModules.nix-homebrew {
+        # nix-homebrew = {
+        #   enable = false; # still off for now
+        #   user = username;
+        #   taps = [ "homebrew/homebrew-core" "homebrew/homebrew-cask" ];
+        #   packages = {
+        #     brews = [ ];
+        #     casks = [ ];
+        #   };
+        # };
+        # }
       ];
     };
   };
