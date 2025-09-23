@@ -64,9 +64,9 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
-            home-manager.backupFileExtension = "backup";
             programs.starship.enable = true;
             programs.zsh = { 
               enable = true;
