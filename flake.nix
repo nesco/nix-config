@@ -3,19 +3,19 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
-    darwin.url  = "github:LnL7/nix-darwin";
+    nix-darwin.url  = "github:LnL7/nix-darwin";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, nix-homebrew, ... }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
   let 
     username = "emmanuel";
     hostname = "emmanuel-mbp";
     system = "aarch64-darwin"; # M-Series
   in {
-    darwinConfigurations.${hostname} = darwin.lib.darwinSystem {
+    darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
       inherit system;
       specialArgs = { inherit username hostname; };
       modules = [
@@ -58,7 +58,7 @@
         home-manager.darwinModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
-          home-manager.useUserPkgs = true;
+          home-manager.useUserPackages = true;
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "24.05";
             programs.starship.enable = true;
