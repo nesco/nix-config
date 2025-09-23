@@ -24,6 +24,9 @@
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
           users.users.${username}.home = "/Users/${username}";
 
+          nixpkgs.config.allowUnfree = true;
+
+
           system.stateVersion = 6;
           system.primaryUser = username;
 
