@@ -66,10 +66,11 @@
           home-manager.useUserPackages = true;
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
+            home-manager.backupFileExtension = "backup";
             programs.starship.enable = true;
             programs.zsh = { 
               enable = true;
-              initExtra = ''
+              initContent = ''
                 # Ensure Nix-managed programs take priority
                 export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
                 export EDITOR=nvim
