@@ -70,7 +70,7 @@
           home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
-            targets.darwin.linkApps = true;
+            targets.darwin.linkApps.enable = true;
             programs.starship.enable = true;
             programs.zoxide.enable = true;
             programs.fzf.enable = true;
