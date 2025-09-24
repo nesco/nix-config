@@ -36,7 +36,7 @@
             git gh lazygit ripgrep fd jq eza bat fzf tree tmux watchman glow jujutsu docker
 
             # move to ghostty to compile it through nix
-            ghostty-bin
+            ghostty
 
             # languages / runtimes
             nodejs_22 bun deno go gopls python313 rustup uv ocaml opam php
