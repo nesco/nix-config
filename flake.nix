@@ -43,8 +43,7 @@
             # shell & workflow
             git gh lazygit ripgrep fd jq eza bat fzf tree tmux watchman glow jujutsu docker
 
-            # Unsupported on mac for now + move to ghostty to compile it through nix
-            # ghostty-bin
+            # Unsupported on mac for now + move to ghostty to compile it through nix: ghostty-bin
 
             # languages / runtimes
             nodejs_22 bun deno go gopls python313 rustup uv ocaml opam php
@@ -109,12 +108,12 @@
               };
             };
             programs.neovim.enable = true;
-            programs.ghostty = {
-              enable = true;
-              settings = {
-                theme = "TokyoNight Moon";
-              };
-            };
+            # programs.ghostty = {
+            #   enable = true;
+            #   settings = {
+            #     theme = "TokyoNight Moon";
+            #   };
+            # };
 
             home.file.".gitignore_global".text = ''
               .DS_Store
