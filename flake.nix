@@ -8,6 +8,14 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    homebrew-core = {
+    url = "github:homebrew/homebrew-core";
+    flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
@@ -116,17 +124,13 @@
         }
 
         # Optional nix-homebrew (disabled by default)
-        nix-homebrew.darwinModules.nix-homebrew {
-        nix-homebrew = {
-          enable = true;
-          user = username;
-          taps = [ "homebrew/homebrew-core" "homebrew/homebrew-cask" ];
-          packages = {
-            brews = [ ];
-            casks = [ "ghostty" "github" "orbstack" ];
-          };
-        };
-        }
+        # nix-homebrew.darwinModules.nix-homebrew {
+        # nix-homebrew = {
+        #   enable = false;
+        #   user = username;
+        #   autoMigrate = true;
+        # };
+        # }
       ];
     };
   };
