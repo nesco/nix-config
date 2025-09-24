@@ -34,6 +34,9 @@
             # shell & workflow
             git gh lazygit ripgrep fd jq eza bat fzf tree tmux watchman glow jujutsu docker
 
+            # move to ghostty to compile it through nix
+            ghostty-bin
+
             # languages / runtimes
             nodejs_22 bun deno go gopls python313 rustup uv ocaml opam php
 
@@ -67,6 +70,7 @@
           home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = { pkgs, ... }: {
             home.stateVersion = "25.05";
+            targets.darwin.linkApps = true;
             programs.starship.enable = true;
             programs.zoxide.enable = true;
             programs.fzf.enable = true;
@@ -96,6 +100,12 @@
               };
             };
             programs.neovim.enable = true;
+            programs.ghostty = {
+              enable = true;
+              settings = {
+                theme = "TokyoNight Moon";
+              };
+            };
 
             home.file.".gitignore_global".text = ''
               .DS_Store
