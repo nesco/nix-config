@@ -79,6 +79,12 @@
                 export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
                 export EDITOR=nvim
               '';
+              shellAliases = {
+                  ls = "eza --group-directories-first --icons";
+                  ll = "eza -lh --group-directories-first --icons";
+                  la = "eza -lha --group-directories-first --icons";
+                  lt = "eza -lh --tree --level=2 --group-directories-first --icons";
+                };
             };
             programs.git = {
               enable = true;
