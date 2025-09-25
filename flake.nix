@@ -82,7 +82,6 @@
               # editors & build
               neovim
               vscode
-              zed-editor
               cmake
               pkg-config
               gnumake
