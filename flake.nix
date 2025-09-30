@@ -91,6 +91,7 @@
               ffmpeg
               yt-dlp
               ast-grep
+              tldr
 
               # db & cloud CLIs
               sqlite
