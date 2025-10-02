@@ -21,7 +21,7 @@
   outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
     let
       username = "emmanuel";
-      hostname = "emmanuel-mbp";
+      hostname = "mbp";
       system = "aarch64-darwin"; # M-Series
     in
     {
@@ -103,7 +103,7 @@
             ];
 
             # Use fish
-            programs.zsh.enable = false;
+            programs.zsh.enable = true;
             programs.fish.enable = true;
             environment.shells = [ pkgs.fish ];
 
@@ -124,7 +124,10 @@
             home-manager.users.${username} = { pkgs, lib, ... }: {
               home.stateVersion = "25.05";
               targets.darwin.linkApps.enable = true;
-              programs.starship.enable = true;
+              programs.starship = {
+                enable = true;
+                enableFishIntegration = true;
+              };
               programs.zoxide.enable = true;
               programs.direnv.enable = true;
               programs.direnv.nix-direnv.enable = true;
@@ -150,21 +153,21 @@
                 enable = true;
                 enableFishIntegration = true;
               };
-              # programs.zsh = {
-              #   enable = true;
-              #   initContent = ''
-              #     # Ensure Nix-managed programs take priority
-              #     export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
-              #     export EDITOR=nvim
-              #     export DIR_NIX=/Users/$USER/.config/nix
-              #   '';
-              #   shellAliases = {
-              #     ls = "eza --icons";
-              #     ll = "eza -lh --group-directories-first --icons";
-              #     la = "eza -lha --group-directories-first --icons";
-              #     lt = "eza -lh --tree --level=2 --group-directories-first --icons";
-              #   };
-              # };
+              programs.zsh = {
+                enable = true;
+                initContent = ''
+                  # Ensure Nix-managed programs take priority
+                  export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
+                  export EDITOR=nvim
+                  export DIR_NIX=/Users/$USER/.config/nix
+                '';
+                shellAliases = {
+                  ls = "eza --icons";
+                  ll = "eza -lh --group-directories-first --icons";
+                  la = "eza -lha --group-directories-first --icons";
+                  lt = "eza -lh --tree --level=2 --group-directories-first --icons";
+                };
+              };
               programs.git = {
                 enable = true;
                 userName = "Emmanuel Federbusch";
