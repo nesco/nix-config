@@ -114,7 +114,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = { pkgs, ... }: {
+            home-manager.users.${username} = { pkgs, lib, ... }: {
               home.stateVersion = "25.05";
 
               # Install GNU Man tools
@@ -130,13 +130,13 @@
 
               # Point man/apropos to your per-user whatis DB
               home.sessionVariables = {
-                MANOPT = "-M ${"\${XDG_CACHE_HOME:-$HOME/.cache}"}/man";
+                MANOPT = "-M ''${"\${XDG_CACHE_HOME:-$HOME/.cache}"}/man";
               };
 
               # Rebuild the DB on every HM switch
               home.activation.updateWhatis = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
                 set -e
-                cache="${XDG_CACHE_HOME:-$HOME/.cache}/man"
+                cache="''${XDG_CACHE_HOME:-$HOME/.cache}/man"
                 mkdir -p "$cache"
 
                 MANPATHS="
