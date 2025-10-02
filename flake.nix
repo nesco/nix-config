@@ -116,6 +116,41 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.${username} = { pkgs, ... }: {
               home.stateVersion = "25.05";
+
+              # Install GNU Man tools
+              home.packages = with pkgs; [
+                man-db
+              ];
+
+              # Prefer the Nix man-db over macOS ones
+              home.sessionPath = [
+                "${pkgs.man-db}/bin"
+                "${pkgs.man-db}/libexec/bin"
+              ];
+
+              # Point man/apropos to your per-user whatis DB
+              home.sessionVariables = {
+                MANOPT = "-M ${"\${XDG_CACHE_HOME:-$HOME/.cache}"}/man";
+              };
+
+              # Rebuild the DB on every HM switch
+              home.activation.updateWhatis = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                set -e
+                cache="${XDG_CACHE_HOME:-$HOME/.cache}/man"
+                mkdir -p "$cache"
+
+                MANPATHS="
+                  $HOME/.nix-profile/share/man
+                  /etc/profiles/per-user/$USER/share/man
+                  /run/current-system/sw/share/man
+                  /opt/homebrew/share/man
+                  /usr/local/share/man
+                  /usr/share/man
+                "
+
+                /usr/libexec/makewhatis -o "$cache/whatis" $MANPATHS || true
+              '';
+
               targets.darwin.linkApps.enable = true;
               programs.starship.enable = true;
               programs.zoxide.enable = true;
