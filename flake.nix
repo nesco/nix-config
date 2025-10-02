@@ -42,6 +42,7 @@
 
             environment.systemPackages = with pkgs; [
               # shell & workflow
+              fish
               git
               gh
               lazygit
@@ -99,7 +100,12 @@
               supabase-cli
             ];
 
-            programs.zsh.enable = true;
+            # Use fish
+            programs.zsh.enable = false;
+            programs.fish.enable = true;
+            environment.shells = [ pkgs.fish ];
+            users.users.${username}.shell = pkgs.fish;
+
             security.pam.services.sudo_local.touchIdAuth = true;
 
             # macOS defaults
@@ -116,55 +122,22 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.${username} = { pkgs, lib, ... }: {
               home.stateVersion = "25.05";
-
-              # Install GNU Man tools
-              home.packages = with pkgs; [
-                man-db
-              ];
-
-              # Prefer the Nix man-db over macOS ones
-              home.sessionPath = [
-                "${pkgs.man-db}/bin"
-                "${pkgs.man-db}/libexec/bin"
-              ];
-
-              # Point man/apropos to your per-user whatis DB
-              home.sessionVariables = {
-                MANOPT = "-M ''${"\${XDG_CACHE_HOME:-$HOME/.cache}"}/man";
-              };
-
-              # Rebuild the DB on every HM switch
-              home.activation.updateWhatis = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                set -e
-                cache="''${XDG_CACHE_HOME:-$HOME/.cache}/man"
-                mkdir -p "$cache"
-
-                MANPATHS="
-                  $HOME/.nix-profile/share/man
-                  /etc/profiles/per-user/$USER/share/man
-                  /run/current-system/sw/share/man
-                  /opt/homebrew/share/man
-                  /usr/local/share/man
-                  /usr/share/man
-                "
-
-                /usr/libexec/makewhatis -o "$cache/whatis" $MANPATHS || true
-              '';
-
               targets.darwin.linkApps.enable = true;
               programs.starship.enable = true;
               programs.zoxide.enable = true;
-              programs.fzf.enable = true;
               programs.direnv.enable = true;
               programs.direnv.nix-direnv.enable = true;
-              programs.zsh = {
+              programs.fish = {
                 enable = true;
-                initContent = ''
+
+                # Equivalent of your old zsh initContent, but in fish syntax
+                interactiveShellInit = ''
                   # Ensure Nix-managed programs take priority
-                  export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
-                  export EDITOR=nvim
-                  export DIR_NIX=/Users/$USER/.config/nix
+                  set -gx PATH /run/current-system/sw/bin /etc/profiles/per-user/$USER/bin $PATH
+                  set -gx EDITOR nvim
+                  set -gx DIR_NIX ~/.config/nix
                 '';
+
                 shellAliases = {
                   ls = "eza --icons";
                   ll = "eza -lh --group-directories-first --icons";
@@ -172,6 +145,25 @@
                   lt = "eza -lh --tree --level=2 --group-directories-first --icons";
                 };
               };
+              programs.fzf = {
+                enable = true;
+                enableFishIntegration = true;
+              };
+              # programs.zsh = {
+              #   enable = true;
+              #   initContent = ''
+              #     # Ensure Nix-managed programs take priority
+              #     export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
+              #     export EDITOR=nvim
+              #     export DIR_NIX=/Users/$USER/.config/nix
+              #   '';
+              #   shellAliases = {
+              #     ls = "eza --icons";
+              #     ll = "eza -lh --group-directories-first --icons";
+              #     la = "eza -lha --group-directories-first --icons";
+              #     lt = "eza -lh --tree --level=2 --group-directories-first --icons";
+              #   };
+              # };
               programs.git = {
                 enable = true;
                 userName = "Emmanuel Federbusch";
