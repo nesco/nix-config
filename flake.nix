@@ -137,7 +137,7 @@
                 # Equivalent of your old zsh initContent, but in fish syntax
                 interactiveShellInit = ''
                   # Ensure Nix-managed programs take priority
-                  set -gx PATH /run/current-system/sw/bin /etc/profiles/per-user/$USER/bin $PATH
+                  set -gx PATH /run/current-system/sw/bin /etc/profiles/per-user/$USER/bin /opt/homebrew/bin $PATH
                   set -gx EDITOR nvim
                   set -gx DIR_NIX ~/.config/nix
                 '';
@@ -157,7 +157,7 @@
                 enable = true;
                 initContent = ''
                   # Ensure Nix-managed programs take priority
-                  export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH
+                  export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:/opt/homebrew/bin:$PATH
                   export EDITOR=nvim
                   export DIR_NIX=/Users/$USER/.config/nix
                 '';
