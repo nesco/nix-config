@@ -29,7 +29,8 @@
         inherit system;
         specialArgs = { inherit username hostname; };
         modules = [
-          # Core nix-darwin settings
+          ({ ... }: { nix.enable = false; })
+         # Core nix-darwin settings
           ({ pkgs, ... }: {
             nix.settings.experimental-features = [ "nix-command" "flakes" ];
             users.users.${username} = {
