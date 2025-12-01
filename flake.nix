@@ -35,7 +35,8 @@
             nix.settings.experimental-features = [ "nix-command" "flakes" ];
             users.users.${username} = {
               home = "/Users/${username}";
-              shell = pkgs.fish;
+              # shell = pkgs.fish;
+              shell = pkgs.zsh;
             };
             nixpkgs.config.allowUnfree = true;
 
@@ -45,7 +46,7 @@
 
             environment.systemPackages = with pkgs; [
               # shell & workflow
-              fish
+              # fish
               git
               gh
               lazygit
@@ -80,6 +81,7 @@
 
               # formatters / linters / TS
               ruff
+              uv
               nodePackages.prettier
               nodePackages.typescript
 
@@ -103,10 +105,12 @@
               supabase-cli
             ];
 
-            # Use fish
+            ## Use fish
             programs.zsh.enable = true;
-            programs.fish.enable = true;
-            environment.shells = [ pkgs.fish ];
+            # programs.fish.enable = true;
+            # environment.shells = [ pkgs.fish ];
+            environment.shells = [ pkgs.zsh ];
+
 
             security.pam.services.sudo_local.touchIdAuth = true;
 
@@ -127,6 +131,7 @@
               targets.darwin.linkApps.enable = true;
               programs.starship = {
                 enable = true;
+                enableZshIntegration = true;
                 enableFishIntegration = true;
               };
               programs.zoxide.enable = true;
