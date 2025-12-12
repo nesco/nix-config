@@ -29,17 +29,42 @@
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
     let
-      # User and system configuration
-      username = "emmanuel";
+      # System configuration
       hostname = "mbp";
       system = "aarch64-darwin"; # Apple Silicon (M-series)
+      primaryUser = "emmanuel";
+
+      # User definitions with their git identities
+      users = {
+        emmanuel = {
+          name = "Emmanuel Federbusch";
+          email = "emmanuel@federbusch.fr";
+          home = "/Users/emmanuel";
+        };
+        emmanuelf = {
+          name = "Emmanuel Federbusch";
+          email = "emmanuel.federbusch@pearltrees.net";
+          home = "/Users/pearltrees";
+        };
+      };
+
+      # Helper function to create Home Manager user config
+      mkUserConfig = username: userInfo: { pkgs, ... }: {
+        imports = [ ./modules/home/shared.nix ];
+
+        # User-specific git configuration
+        programs.git = {
+          userName = userInfo.name;
+          userEmail = userInfo.email;
+        };
+      };
     in
     {
       # Main system configuration
       # Build with: darwin-rebuild switch --flake ~/.config/nix#mbp
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         inherit system;
-        specialArgs = { inherit username hostname; };
+        specialArgs = { inherit primaryUser; };
         modules = [
           # Determinate Nix compatibility
           ({ ... }: {
@@ -49,15 +74,21 @@
           # Core nix-darwin settings
           ({ pkgs, ... }: {
             nix.settings.experimental-features = [ "nix-command" "flakes" ];
-            users.users.${username} = {
-              home = "/Users/${username}";
+
+            # Define all users
+            users.users.emmanuel = {
+              home = users.emmanuel.home;
               shell = pkgs.zsh;
             };
+            users.users.pearltrees = {
+              home = users.pearltrees.home;
+              shell = pkgs.zsh;
+            };
+
             nixpkgs.config.allowUnfree = true;
 
-
             system.stateVersion = 6;
-            system.primaryUser = username;
+            system.primaryUser = primaryUser;
 
             environment.systemPackages = with pkgs; [
               # === Shells ===
@@ -185,162 +216,17 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = { pkgs, ... }: {
-              home.stateVersion = "25.05";
-              targets.darwin.linkApps.enable = true;
 
-              # Common environment variables for all shells
-              home.sessionVariables = {
-                EDITOR = "nvim";
-                DIR_NIX = "$HOME/.config/nix";
-              };
-
-              # Common aliases for all shells
-              home.shellAliases = {
-                ls = "eza --icons";
-                ll = "eza -lh --group-directories-first --icons";
-                la = "eza -lha --group-directories-first --icons";
-                lt = "eza -lh --tree --level=2 --group-directories-first --icons";
-              };
-
-              # Prompt - integrated with all shells
-              programs.starship = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-                enableNushellIntegration = true;
-              };
-
-              # Directory jumping - integrated with all shells
-              programs.zoxide = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-                enableNushellIntegration = true;
-              };
-
-              # Direnv - auto-integrates with enabled shells
-              programs.direnv = {
-                enable = true;
-                nix-direnv.enable = true;
-              };
-              # Fuzzy finder - integrated with all shells
-              programs.fzf = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-              };
-
-              # Better shell history - synced, searchable
-              programs.atuin = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-                enableNushellIntegration = true;
-                settings = {
-                  auto_sync = true;
-                  sync_frequency = "5m";
-                  search_mode = "fuzzy";
-                  style = "compact";
-                };
-              };
-
-              # Modern file manager
-              programs.yazi = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-                enableNushellIntegration = true;
-              };
-
-              # Multi-shell completions (essential for Nushell!)
-              programs.carapace = {
-                enable = true;
-                enableZshIntegration = true;
-                enableFishIntegration = true;
-                enableNushellIntegration = true;
-              };
-
-              # Terminal multiplexer alternative
-              programs.zellij = {
-                enable = true;
-              };
-
-              # === Shell Configurations ===
-              # Note: Aliases and common env vars are set via home.shellAliases and home.sessionVariables
-
-              # Zsh - Default shell
-              programs.zsh = {
-                enable = true;
-                enableCompletion = true;
-                autosuggestion.enable = true;
-                syntaxHighlighting.enable = true;
-                initContent = ''
-                  # Ensure Nix-managed programs take priority
-                  export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:/opt/homebrew/bin:$PATH
-                '';
-              };
-
-              # Fish - Alternative shell
-              programs.fish = {
-                enable = true;
-                interactiveShellInit = ''
-                  # Ensure Nix-managed programs take priority
-                  set -gx PATH /run/current-system/sw/bin /etc/profiles/per-user/$USER/bin /opt/homebrew/bin $PATH
-                '';
-              };
-
-              # Nushell - Alternative shell (structured data shell)
-              programs.nushell = {
-                enable = true;
-                # Nushell config (config.nu)
-                extraConfig = ''
-                  $env.config = {
-                    show_banner: false
-                    edit_mode: vi
-                  }
-                '';
-                # Nushell environment (env.nu)
-                extraEnv = ''
-                  # Ensure Nix-managed programs take priority
-                  $env.PATH = ($env.PATH | split row (char esep) | prepend "/run/current-system/sw/bin" | prepend $"/etc/profiles/per-user/($env.USER)/bin" | prepend "/opt/homebrew/bin")
-                '';
-              };
-
-              # Git configuration with delta for better diffs
-              programs.git = {
-                enable = true;
-                userName = "Emmanuel Federbusch";
-                userEmail = "emmanuel@federbusch.fr";
-                delta = {
-                  enable = true;
-                  options = {
-                    navigate = true;
-                    line-numbers = true;
-                    side-by-side = false;
-                  };
-                };
-                extraConfig = {
-                  init.defaultBranch = "main";
-                  pull.rebase = true;
-                  merge.conflictstyle = "diff3";
-                  diff.colorMoved = "default";
-                };
-              };
-              programs.neovim.enable = true;
-
-              home.file.".gitignore_global".text = ''
-                .DS_Store
-                node_modules/
-              '';
-            };
+            # Configure all users with shared config + user-specific overrides
+            home-manager.users.emmanuel = mkUserConfig "emmanuel" users.emmanuel;
+            home-manager.users.pearltrees = mkUserConfig "pearltrees" users.pearltrees;
           }
 
           # Optional nix-homebrew (disabled by default)
           # nix-homebrew.darwinModules.nix-homebrew {
           # nix-homebrew = {
           #   enable = false;
-          #   user = username;
+          #   user = primaryUser;
           #   autoMigrate = true;
           # };
           # }
