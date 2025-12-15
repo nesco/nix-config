@@ -92,6 +92,9 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    initExtraFirst = ''
+    ZSH_DISABLE_COMPFIX=true
+    '';
     initContent = ''
       # Ensure Nix-managed programs take priority
       export PATH=/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:/opt/homebrew/bin:$PATH

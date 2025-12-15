@@ -81,7 +81,7 @@
               shell = pkgs.zsh;
             };
             users.users.pearltrees = {
-              home = users.pearltrees.home;
+              home = users.emmanuelf.home;
               shell = pkgs.zsh;
             };
 
@@ -219,7 +219,7 @@
 
             # Configure all users with shared config + user-specific overrides
             home-manager.users.emmanuel = mkUserConfig "emmanuel" users.emmanuel;
-            home-manager.users.pearltrees = mkUserConfig "pearltrees" users.pearltrees;
+            home-manager.users.pearltrees = mkUserConfig "pearltrees" users.emmanuelf;
           }
 
           # Optional nix-homebrew (disabled by default)
