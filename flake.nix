@@ -25,6 +25,7 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
   };
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
@@ -50,7 +51,9 @@
 
       # Helper function to create Home Manager user config
       mkUserConfig = username: userInfo: { pkgs, ... }: {
-        imports = [ ./modules/home/shared.nix ];
+        imports = [
+          ./modules/home/shared.nix
+        ];
 
         # User-specific git configuration
         programs.git = {
@@ -150,6 +153,7 @@
               neovim
               vim
               vscode
+
               docker
               lazydocker      # TUI for Docker
 
