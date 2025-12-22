@@ -76,7 +76,7 @@
         primaryUser = "emmanuel";
 
         # Theming - switch between "catppuccin" or "tokyonight"
-        theme = "catppuccin";
+        theme = "tokyonight";
 
         # Catppuccin options (when theme = "catppuccin")
         catppuccin = {
@@ -122,16 +122,21 @@
           };
 
           # Theming - conditional based on nesco.theme
+          # NOTE: nvim.enable = false because theme modules don't install neovim plugins
           catppuccin = lib.mkIf (nesco.theme == "catppuccin") {
             enable = true;
             flavor = nesco.catppuccin.flavor;
             accent = nesco.catppuccin.accent;
+            nvim.enable = false;
           };
 
           tokyonight = lib.mkIf (nesco.theme == "tokyonight") {
             enable = true;
             style = nesco.tokyonight.style;
           };
+
+          # Disable nvim theming - theme modules don't properly install neovim plugins
+          programs.neovim.tokyonight.enable = false;
         };
     in
     {

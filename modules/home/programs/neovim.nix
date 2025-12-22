@@ -143,5 +143,10 @@
 
     # Node provider (for coc.nvim, copilot, etc.)
     withNodeJs = true;
+
+    # Treesitter parsers from Nix (avoids compile issues)
+    plugins = with pkgs.vimPlugins; [
+      nvim-treesitter.withAllGrammars
+    ];
   };
 }
