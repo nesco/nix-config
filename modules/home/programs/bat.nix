@@ -25,8 +25,7 @@
         "*.nix:Nix"
       ];
 
-      # Theme
-      theme = "tokyonight_night";
+      # Theme is set by catppuccin/tokyonight module
     };
 
     # Extra bat utilities

@@ -4,7 +4,6 @@
 
 {
   imports = [
-    ./programs/aerospace.nix
     ./programs/atuin.nix
     ./programs/bat.nix
     ./programs/claude-code.nix
@@ -22,6 +21,7 @@
     ./programs/neovim.nix
     ./programs/nushell.nix
     ./programs/opencode.nix
+    ./programs/python.nix
     ./programs/ssh.nix
     ./programs/starship.nix
     ./programs/tmux.nix

@@ -1,3 +1,14 @@
+# Starship prompt configuration
+#
+# Theming: Palette is automatically set by catppuccin/tokyonight nix modules
+# based on nesco.theme in flake.nix. Do NOT set palette here.
+#
+# This file configures behavior and symbols only - colors come from the theme.
+#
+# Presets reference (for manual use outside nix):
+#   starship preset nerd-font-symbols  - Nerd Font icons
+#   starship preset tokyo-night        - Tokyo Night theme
+#   starship preset catppuccin-powerline - Catppuccin theme
 { ... }:
 
 {
@@ -5,47 +16,31 @@
     enable = true;
 
     settings = {
-      # Tokyo Night color palette
-      palette = "tokyo_night";
-      palettes.tokyo_night = {
-        foreground = "#c0caf5";
-        background = "#1a1b26";
-        black = "#15161e";
-        red = "#f7768e";
-        green = "#9ece6a";
-        yellow = "#e0af68";
-        blue = "#7aa2f7";
-        magenta = "#bb9af7";
-        cyan = "#7dcfff";
-        white = "#a9b1d6";
-      };
-
-      # General
+      # === General ===
       add_newline = true;
       scan_timeout = 10;
 
-      # Character (prompt symbol) - Tokyo Night colors
+      # === Prompt symbols ===
       character = {
-        success_symbol = "[❯](bold cyan)";
+        success_symbol = "[❯](bold green)";
         error_symbol = "[❯](bold red)";
-        vimcmd_symbol = "[❮](bold green)";
+        vimcmd_symbol = "[❮](bold blue)";
       };
 
-      # Directory - Tokyo Night blue
+      # === Directory ===
       directory = {
         truncation_length = 3;
         truncate_to_repo = true;
-        style = "bold blue";
+        read_only = " 󰌾";
       };
 
-      # Git - Tokyo Night magenta for branch
+      # === Git ===
       git_branch = {
         symbol = " ";
         truncation_length = 20;
-        style = "bold magenta";
       };
+
       git_status = {
-        style = "bold yellow";
         conflicted = "=";
         ahead = "⇡";
         behind = "⇣";
@@ -58,31 +53,40 @@
         deleted = "✘";
       };
 
-      # Languages - show version only when relevant
-      nodejs.detect_files = [
-        "package.json"
-        ".node-version"
-      ];
-      python.detect_extensions = [ "py" ];
-      rust.detect_files = [ "Cargo.toml" ];
-      golang.detect_files = [ "go.mod" ];
+      # === Nerd Font symbols for languages ===
+      # (matches starship nerd-font-symbols preset)
+      c.symbol = " ";
+      golang.symbol = " ";
+      haskell.symbol = " ";
+      java.symbol = " ";
+      kotlin.symbol = " ";
+      lua.symbol = " ";
+      nodejs.symbol = " ";
+      python.symbol = " ";
+      rust.symbol = "󱘗 ";
+      zig.symbol = " ";
 
-      # Nix shell indicator
       nix_shell = {
         symbol = " ";
         format = "via [$symbol$state]($style) ";
       };
 
-      # Command duration (show if > 2s)
+      # === Language detection ===
+      nodejs.detect_files = [ "package.json" ".node-version" ".nvmrc" ];
+      python.detect_extensions = [ "py" ];
+      rust.detect_files = [ "Cargo.toml" ];
+      golang.detect_files = [ "go.mod" ];
+
+      # === Command duration (show if > 2s) ===
       cmd_duration = {
         min_time = 2000;
         format = "took [$duration]($style) ";
       };
 
-      # Disabled modules (uncomment to disable)
-      # package.disabled = true;
-      # aws.disabled = true;
-      # gcloud.disabled = true;
+      # === Disabled modules ===
+      aws.disabled = true;
+      gcloud.disabled = true;
+      azure.disabled = true;
     };
   };
 }

@@ -6,8 +6,7 @@
 
     # KDL settings
     settings = {
-      # Theme
-      theme = "tokyo-night";
+      # Theme is set by catppuccin/tokyonight module
 
       # Mouse support
       mouse_mode = true;

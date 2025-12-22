@@ -7,8 +7,8 @@
     settings = {
       # User info - inherit from git config
       user = {
-        name = config.programs.git.userName;
-        email = config.programs.git.userEmail;
+        name = config.programs.git.settings.user.name;
+        email = config.programs.git.settings.user.email;
       };
 
       # UI settings
@@ -59,7 +59,7 @@
       revset-aliases = {
         "trunk()" =
           "latest(remote_bookmarks(exact:main, exact:origin) | remote_bookmarks(exact:master, exact:origin))";
-        "mine()" = "author(exact:\"${config.programs.git.userEmail}\")";
+        "mine()" = "author(exact:\"${config.programs.git.settings.user.email}\")";
       };
 
       # Colors

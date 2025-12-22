@@ -4,10 +4,12 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      git.paging = {
-        colorArg = "always";
-        pager = "delta --dark --paging=never";
-      };
+      git.pagers = [
+        {
+          pager = "delta --dark --paging=never";
+          colorArg = "always";
+        }
+      ];
 
       # Tokyo Night theme
       gui.theme = {

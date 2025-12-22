@@ -4,15 +4,6 @@
   programs.git = {
     enable = true;
 
-    delta = {
-      enable = true;
-      options = {
-        navigate = true;
-        line-numbers = true;
-        side-by-side = false;
-      };
-    };
-
     # Global gitignore
     ignores = [
       ".DS_Store"
@@ -22,8 +13,8 @@
       "*~"
     ];
 
-    # Git settings
-    extraConfig = {
+    # Git settings (replaces extraConfig)
+    settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
@@ -41,5 +32,16 @@
 
     # Uncomment to enable Git LFS
     # lfs.enable = true;
+  };
+
+  # Delta pager (moved from programs.git.delta)
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      line-numbers = true;
+      side-by-side = false;
+    };
   };
 }

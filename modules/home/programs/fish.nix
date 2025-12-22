@@ -84,6 +84,23 @@
       # Homebrew (lower priority than Nix)
       fish_add_path --append /opt/homebrew/bin
 
+      # SOPS age key location
+      set -gx SOPS_AGE_KEY_FILE "$HOME/.config/sops/age/keys.txt"
+
+      # Load secrets (API keys, etc.)
+      # Each user maintains their own ~/.secrets.env
+      if test -f ~/.secrets.env
+        for line in (cat ~/.secrets.env | grep -v '^#' | grep -v '^$')
+          set -l key (echo $line | cut -d= -f1)
+          set -l val (echo $line | cut -d= -f2-)
+          set -gx $key $val
+        end
+      end
+      # Load sops-managed secrets
+      if test -r /run/secrets/context7_api_key
+        set -gx CONTEXT7_API_KEY (cat /run/secrets/context7_api_key)
+      end
+
       # Suppress greeting
       set -g fish_greeting
 

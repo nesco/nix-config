@@ -52,6 +52,31 @@
     extraEnv = ''
       # Ensure Nix-managed programs take priority
       $env.PATH = ($env.PATH | split row (char esep) | prepend "/run/current-system/sw/bin" | prepend $"/etc/profiles/per-user/($env.USER)/bin" | prepend "/opt/homebrew/bin")
+
+      # SOPS age key location
+      $env.SOPS_AGE_KEY_FILE = $"($env.HOME)/.config/sops/age/keys.txt"
+
+      # Load secrets (API keys, etc.)
+      # Each user maintains their own ~/.secrets.env
+      let secrets_file = $"($env.HOME)/.secrets.env"
+      if ($secrets_file | path exists) {
+        open $secrets_file
+        | lines
+        | where { |line| not ($line | str starts-with '#') and ($line | str contains '=') }
+        | each { |line|
+          let idx = ($line | str index-of '=')
+          let key = ($line | str substring 0..$idx)
+          let value = ($line | str substring ($idx + 1)..)
+          {$key: $value}
+        }
+        | reduce -f {} { |it, acc| $acc | merge $it }
+        | load-env
+      }
+
+      # Load sops-managed secrets
+      if ("/run/secrets/context7_api_key" | path exists) {
+        $env.CONTEXT7_API_KEY = (open /run/secrets/context7_api_key | str trim)
+      }
     '';
 
     # Plugins
