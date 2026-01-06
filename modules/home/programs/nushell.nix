@@ -85,7 +85,7 @@
       query # query data structures (xpath, web scraping)
       gstat # git status info
       polars # dataframes (like pandas)
-      highlight # syntax highlighting
+      # highlight # syntax highlighting
       # net      # network utilities
       # regex    # regex operations
       # units    # unit conversions
