@@ -6,7 +6,7 @@
   imports = [
     ./programs/atuin.nix
     ./programs/bat.nix
-    ./programs/claude-code.nix
+    # ./programs/claude-code.nix  # Disabled: plugins need write access to ~/.claude/
     ./programs/codex.nix
     ./programs/direnv.nix
     # ./programs/emacs.nix  # TODO: org package has download issues in nixpkgs
