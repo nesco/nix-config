@@ -19,9 +19,9 @@
 
       # JavaScript/TypeScript
       bun # Fast JS/TS runtime & package manager
-      nodePackages.typescript-language-server
+      typescript-language-server
       vscode-langservers-extracted # HTML, CSS, JSON, ESLint
-      nodePackages.svelte-language-server
+      svelte-language-server
       tailwindcss-language-server
       emmet-language-server
 
@@ -47,7 +47,7 @@
 
       # PHP
       phpactor
-      # nodePackages.intelephense  # alternative
+      # intelephense  # alternative
 
       # OCaml
       ocamlPackages.ocaml-lsp
@@ -71,7 +71,7 @@
       docker-compose-language-service
 
       # Bash/Shell
-      nodePackages.bash-language-server
+      bash-language-server
       shellcheck
 
       # SQL
@@ -87,7 +87,7 @@
 
       # JavaScript/TypeScript/Web
       prettierd
-      nodePackages.prettier
+      prettier
 
       # Go
       gofumpt

@@ -240,7 +240,7 @@
                 ncdu # NCurses disk usage
 
                 # Development tools
-                watchman # File watching service
+                # watchman # File watching service (disabled: edencommon build failure on ARM macOS)
                 watchexec # Execute on file changes
                 entr # Run commands when files change
                 ast-grep # AST-based code search
@@ -278,9 +278,9 @@
                 nodejs_24
                 bun
                 pnpm
-                deno
-                nodePackages.prettier
-                nodePackages.typescript
+                # deno
+                prettier
+                typescript
 
                 # Go
                 go
