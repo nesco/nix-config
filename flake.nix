@@ -355,6 +355,10 @@
                 git-crypt
                 gnupg
                 pinentry_mac
+
+                # Agents
+                claude-code
+                codex
               ];
 
               # Enable shells - zsh is default, fish and nushell are alternatives

@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, pkgs, ... }:
 
 {
   programs.ssh = {
@@ -18,6 +18,10 @@
       "*" = {
         # Use ssh-agent
         addKeysToAgent = "yes";
+        # UseKeychain is an Apple-specific OpenSSH option (macOS Keychain integration)
+        extraOptions = lib.optionalAttrs pkgs.stdenv.isDarwin {
+          UseKeychain = "yes";
+        };
 
         # Multiplexing (reuse connections)
         controlMaster = "auto";

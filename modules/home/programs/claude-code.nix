@@ -342,7 +342,7 @@
       };
 
       # Disable co-authored-by in commits (optional)
-      # includeCoAuthoredBy = false;
+      includeCoAuthoredBy = false;
     };
 
     # Custom commands (optional examples)

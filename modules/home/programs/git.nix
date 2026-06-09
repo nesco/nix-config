@@ -15,7 +15,7 @@
 
     # Git settings (replaces extraConfig)
     settings = {
-      init.defaultBranch = "main";
+      #init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
       merge.conflictstyle = "diff3";

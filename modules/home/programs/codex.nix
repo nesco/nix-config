@@ -6,9 +6,7 @@
 
     settings = {
       # Model configuration (GPT-5 Codex series)
-      model = "gpt-5.2-codex";
-      # model = "gpt-5.1-codex-max";   # long-horizon agentic tasks
-      # model = "gpt-5.1-codex-mini";  # faster, cheaper
+      model = "gpt-5.5";
 
       # Uncomment for local Ollama
       # model_provider = "ollama";
