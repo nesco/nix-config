@@ -134,6 +134,9 @@
       gnumake
     ];
 
+    # Adopt new default — Ruby provider disabled
+    withRuby = false;
+
     # Python provider packages (for plugins needing Python)
     withPython3 = true;
     extraPython3Packages =

@@ -4,7 +4,7 @@
   programs.ssh = {
     enable = true;
 
-    # Silence deprecation warning - we handle defaults in matchBlocks."*"
+    # Silence deprecation warning - we handle defaults in settings."*"
     enableDefaultConfig = false;
 
     # Include personal hosts and OrbStack
@@ -13,42 +13,44 @@
       "~/.ssh/config.local"
     ];
 
-    # Default settings for all hosts
-    matchBlocks = {
+    # New-style settings: attr keys are Host/Match patterns, values use
+    # upstream OpenSSH directive names (CamelCase).
+    settings = {
+      # Defaults for all hosts
       "*" = {
         # Use ssh-agent
-        addKeysToAgent = "yes";
-        # UseKeychain is an Apple-specific OpenSSH option (macOS Keychain integration)
-        extraOptions = lib.optionalAttrs pkgs.stdenv.isDarwin {
-          UseKeychain = "yes";
-        };
+        AddKeysToAgent = "yes";
 
         # Multiplexing (reuse connections)
-        controlMaster = "auto";
-        controlPath = "~/.ssh/sockets/%r@%h-%p";
-        controlPersist = "10m";
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/sockets/%r@%h-%p";
+        ControlPersist = "10m";
 
         # Keep connections alive
-        serverAliveInterval = 60;
-        serverAliveCountMax = 3;
+        ServerAliveInterval = 60;
+        ServerAliveCountMax = 3;
 
         # Security
-        hashKnownHosts = true;
-        identitiesOnly = true;
+        HashKnownHosts = "yes";
+        IdentitiesOnly = "yes";
+      }
+      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+        # macOS Keychain integration (Apple-specific OpenSSH option)
+        UseKeychain = "yes";
       };
 
       # GitHub
       "github.com" = {
-        hostname = "github.com";
-        user = "git";
-        identityFile = [ "~/.ssh/id_ed25519" ];
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = "~/.ssh/id_ed25519";
       };
 
       # GitLab
       "gitlab.com" = {
-        hostname = "gitlab.com";
-        user = "git";
-        identityFile = [ "~/.ssh/id_ed25519" ];
+        HostName = "gitlab.com";
+        User = "git";
+        IdentityFile = "~/.ssh/id_ed25519";
       };
     };
   };

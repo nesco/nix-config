@@ -123,10 +123,14 @@
 
           # Theming - conditional based on nesco.theme
           # NOTE: nvim.enable = false because theme modules don't install neovim plugins
-          catppuccin = lib.mkIf (nesco.theme == "catppuccin") {
+          # NOTE: in the new catppuccin/nix API, `autoEnable` controls per-port enrollment
+          # and `enable` is the global toggle. We set both explicitly to silence the
+          # migration warning regardless of the selected theme.
+          catppuccin = {
             enable = true;
-            flavor = nesco.catppuccin.flavor;
-            accent = nesco.catppuccin.accent;
+            autoEnable = nesco.theme == "catppuccin";
+            flavor = lib.mkIf (nesco.theme == "catppuccin") nesco.catppuccin.flavor;
+            accent = lib.mkIf (nesco.theme == "catppuccin") nesco.catppuccin.accent;
             nvim.enable = false;
           };
 

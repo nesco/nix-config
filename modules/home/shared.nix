@@ -13,7 +13,7 @@
     ./programs/eza.nix
     ./programs/fish.nix
     ./programs/fzf.nix
-    ./programs/gemini-cli.nix
+    ./programs/antigravity-cli.nix
     ./programs/gh.nix
     ./programs/git.nix
     ./programs/jujutsu.nix
