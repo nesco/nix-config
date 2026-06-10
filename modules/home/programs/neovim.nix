@@ -151,5 +151,13 @@
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter.withAllGrammars
     ];
+
+    # Bootstrap lazy.nvim / LazyVim from the existing ~/.config/nvim/lua config.
+    # Without this, home-manager's generated init.lua replaces the LazyVim one
+    # and only sets provider paths.
+    extraLuaConfig = ''
+      -- bootstrap lazy.nvim, LazyVim and your plugins
+      require("config.lazy")
+    '';
   };
 }
