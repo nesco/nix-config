@@ -52,6 +52,7 @@
 
   # Modern file manager
   programs.yazi.enable = true;
+  programs.yazi.shellWrapperName = "y"; # adopt new default (was "yy")
 
   # Multi-shell completions (essential for Nushell!)
   programs.carapace.enable = true;
