@@ -4,9 +4,9 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      git.pagers = [
+      git.diffRenderers = [
         {
-          pager = "delta --dark --paging=never";
+          command = "delta --dark --paging=never";
           colorArg = "always";
         }
       ];
