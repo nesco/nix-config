@@ -163,11 +163,17 @@
 
           # Core nix-darwin settings
           (
-            { pkgs, ... }:
+            { pkgs, lib, ... }:
             {
               nix.settings.experimental-features = [
                 "nix-command"
                 "flakes"
+              ];
+
+              environment.variables.TERMINFO_DIRS = lib.mkForce [
+                "/etc/profiles/per-user/$USER/share/terminfo"
+                "/run/current-system/sw/share/terminfo"
+                "/usr/share/terminfo"
               ];
 
               # Define all users
@@ -306,8 +312,8 @@
                 haskell-language-server
 
                 # Elixir/Erlang
-                elixir
-                erlang
+                beamPackages.elixir
+                beamPackages.erlang
 
                 # Ruby
                 ruby
@@ -380,6 +386,13 @@
               system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
               system.defaults.dock.autohide = true;
               system.defaults.finder.FXPreferredViewStyle = "Nlsv"; # list view
+
+              system.activationScripts.userDefaults.text = lib.mkAfter ''
+                dockService="gui/$(id -u ${lib.escapeShellArg nesco.primaryUser})/com.apple.Dock.agent"
+                if launchctl print "$dockService" >/dev/null 2>&1; then
+                  launchctl kickstart -k "$dockService"
+                fi
+              '';
             }
           )
 

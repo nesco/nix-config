@@ -34,7 +34,7 @@
         HashKnownHosts = "yes";
         IdentitiesOnly = "yes";
       }
-      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         # macOS Keychain integration (Apple-specific OpenSSH option)
         UseKeychain = "yes";
       };

@@ -6,8 +6,9 @@
 
     # Use fd instead of find (faster, respects .gitignore)
     defaultCommand = "fd --type f --hidden --exclude .git";
-    fileWidgetCommand = "fd --type f --hidden --exclude .git";
-    changeDirWidgetCommand = "fd --type d --hidden --exclude .git";
+    fileWidget.command = "fd --type f --hidden --exclude .git";
+    changeDirWidget.command = "fd --type d --hidden --exclude .git";
+    historyWidget.command = "";
 
     # Default options
     defaultOptions = [
@@ -23,17 +24,17 @@
     ];
 
     # CTRL-T: file preview with bat
-    fileWidgetOptions = [
+    fileWidget.options = [
       "--preview 'bat --style=numbers --color=always --line-range :500 {}'"
     ];
 
     # ALT-C: directory preview with eza
-    changeDirWidgetOptions = [
+    changeDirWidget.options = [
       "--preview 'eza --tree --level=2 --icons --color=always {}'"
     ];
 
     # CTRL-R: history options
-    historyWidgetOptions = [
+    historyWidget.options = [
       "--sort"
       "--exact"
     ];
