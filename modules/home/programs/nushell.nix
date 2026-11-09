@@ -3,6 +3,7 @@
 {
   programs.nushell = {
     enable = true;
+    loadSessionVariables = false; # Preserve behavior from home.stateVersion 25.05.
 
     # Structured settings (preferred over extraConfig)
     settings = {

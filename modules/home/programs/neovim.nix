@@ -60,7 +60,12 @@
       elixir-ls
 
       # Markdown
-      marksman
+      # Avoid bootstrapping .NET from source when its Nix cache entry is missing.
+      (marksman.override {
+        dotnetCorePackages = pkgs.dotnetCorePackages // {
+          runtime_9_0 = pkgs.dotnetCorePackages.runtime_9_0-bin;
+        };
+      })
 
       # YAML/TOML
       yaml-language-server

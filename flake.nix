@@ -254,7 +254,6 @@
                 watchexec # Execute on file changes
                 entr # Run commands when files change
                 ast-grep # AST-based code search
-                semgrep # Semantic code analysis
                 tokei # Code statistics
                 scc # Sloc, cloc alternative
                 hyperfine # Command benchmarking
